@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Megan P. Quintin — Résumé</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0d0d0d;
+      --white: #f8f8f6;
+      --mid:   #5a5a5a;
+      --line:  #d8d8d4;
+      --accent:#1a1a1a;
+      --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      --serif: 'EB Garamond', Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Google Fonts ─────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap');
+
+    /* ── Layout ───────────────────────────────────────── */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── Header / Hero ────────────────────────────────── */
+    header {
+      padding: 6rem 0 4rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .name {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .title-tag {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .header-meta {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-size: 0.82rem;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+    }
+
+    .meta-sep {
+      width: 4px; height: 4px;
+      background: var(--line);
+      border-radius: 50%;
+    }
+
+    /* Email button */
+    .btn-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--black);
+      background: transparent;
+      color: var(--black);
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .btn-email:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .btn-email svg {
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-email:hover svg { transform: translateX(2px); }
+
+    /* ── Main content ─────────────────────────────────── */
+    main {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 0;
+    }
+
+    /* ── Left column ──────────────────────────────────── */
+    .col-left {
+      padding: 3.5rem 3rem 4rem 0;
+      border-right: 1px solid var(--line);
+    }
+
+    /* ── Right column ─────────────────────────────────── */
+    .col-right {
+      padding: 3.5rem 0 4rem 2.5rem;
+    }
+
+    /* ── Section headings ─────────────────────────────── */
+    .section { margin-bottom: 3rem; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* ── Summary ──────────────────────────────────────── */
+    .summary-text {
+      font-family: var(--serif);
+      font-size: 1.08rem;
+      line-height: 1.7;
+      color: var(--accent);
+    }
+
+    /* ── Experience entries ───────────────────────────── */
+    .entry {
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .entry.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .entry-title {
+      font-size: 0.96rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .entry-date {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+      white-space: nowrap;
+    }
+
+    .entry-org {
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.05em;
+      margin: 0.2rem 0 0.7rem;
+    }
+
+    /* Toggle button wrapping entry header + org */
+    .entry-toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      color: inherit;
+      font: inherit;
+      display: block;
+    }
+
+    .entry-toggle:focus-visible {
+      outline: 1px solid var(--mid);
+      outline-offset: 3px;
+    }
+
+    /* Hover: lighten the title slightly */
+    .entry-toggle:hover .entry-title {
+      opacity: 0.65;
+    }
+
+    /* Chevron indicator */
+    .chevron {
+      display: inline-block;
+      font-size: 0.65rem;
+      color: var(--mid);
+      margin-left: 0.45rem;
+      vertical-align: middle;
+      transition: transform 0.3s ease;
+      line-height: 1;
+    }
+
+    .entry.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Collapsed list */
+    .entry-list {
+      list-style: none;
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.38s ease, opacity 0.3s ease;
+    }
+
+    /* Expanded list */
+    .entry.open .entry-list {
+      max-height: 600px;
+      opacity: 1;
+    }
+
+    .entry-list li {
+      font-size: 0.86rem;
+      line-height: 1.6;
+      color: #3a3a3a;
+      padding-left: 1rem;
+      position: relative;
+      margin-bottom: 0.4rem;
+    }
+
+    .entry-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--line);
+    }
+
+    /* ── Education ────────────────────────────────────── */
+    .edu-entry {
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .edu-entry.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .edu-degree {
+      font-size: 0.84rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .edu-field {
+      font-size: 0.78rem;
+      font-style: italic;
+      color: #3a3a3a;
+      margin-top: 0.15rem;
+    }
+
+    .edu-school {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--mid);
+      margin-top: 0.25rem;
+    }
+
+    /* ── Skills / keywords ────────────────────────────── */
+    .skills-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .skill-tag {
+      font-size: 0.77rem;
+      color: #3a3a3a;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--line);
+      letter-spacing: 0.02em;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .skill-tag.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ── Footer ───────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .footer-note {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+      text-transform: uppercase;
+    }
+
+    .footer-site {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-site:hover { color: var(--black); }
+
+    /* ── Responsive ───────────────────────────────────── */
+    @media (max-width: 680px) {
+      header { padding: 4rem 0 3rem; }
+      main {
+        grid-template-columns: 1fr;
+      }
+      .col-left {
+        padding: 3rem 0 0;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .col-right {
+        padding: 3rem 0 4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────── -->
+  <div class="page">
+    <header>
+      <p class="title-tag">Content Strategist &amp; Editor</p>
+      <h1 class="name">Megan P. Quintin</h1>
+      <div class="header-meta">
+        <span class="meta-item">Henrico, Virginia</span>
+        <span class="meta-sep"></span>
+        <span class="meta-item">meganquintin.com</span>
+        <span class="meta-sep"></span>
+        <a class="btn-email" href="mailto:megan.p.quintin@gmail.com">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <polyline points="2,4 12,13 22,4"/>
+          </svg>
+          Send Email
+        </a>
+      </div>
+    </header>
+
+    <!-- ── MAIN GRID ───────────────────────────────── -->
+    <main>
+
+      <!-- LEFT COLUMN -->
+      <div class="col-left">
+
+        <!-- Summary -->
+        <section class="section">
+          <p class="section-label">Profile</p>
+          <p class="summary-text">
+            Content strategist and editor with an MA in Technical Communication and 3+ years
+            creating research-driven narratives for digital platforms. Skilled in cross-functional
+            collaboration, editorial project management, audience strategy, and translating complex
+            information for diverse audiences.
+          </p>
+        </section>
+
+        <!-- Experience -->
+        <section class="section">
+          <p class="section-label">Experience</p>
+
+          <article class="entry">
+            <button class="entry-toggle" aria-expanded="false">
+              <div class="entry-header">
+                <span class="entry-title">Residential Content Writer <span class="chevron">▾</span></span>
+                <span class="entry-date">01.2023 – 02.2026</span>
+              </div>
+              <p class="entry-org">Homes.com</p>
+            </button>
+            <ul class="entry-list" aria-hidden="true">
+              <li>Researched and reported on neighborhoods, small towns, and cities to create local guides for prospective home buyers.</li>
+              <li>Collaborated with photographers, video editors, and content managers to synchronize narratives, scripts, and shot lists.</li>
+              <li>Managed concurrent projects across multiple stages, from concept through production.</li>
+              <li>Promoted from Associate Residential Content Writer to Residential Content Writer — July 2024.</li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <button class="entry-toggle" aria-expanded="false">
+              <div class="entry-header">
+                <span class="entry-title">Director of Property Management <span class="chevron">▾</span></span>
+                <span class="entry-date">08.2020 – 12.2022</span>
+              </div>
+              <p class="entry-org">CBS Rentals, LLC</p>
+            </button>
+            <ul class="entry-list" aria-hidden="true">
+              <li>Promoted twice in two years (Assistant → Manager → Director), overseeing tenant operations and financial records for a residential property portfolio.</li>
+              <li>Developed and executed social media strategy across multiple platforms with written and graphic content to drive engagement and tenant acquisition.</li>
+              <li>Maintained company websites with current property information and marketing content.</li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <button class="entry-toggle" aria-expanded="false">
+              <div class="entry-header">
+                <span class="entry-title">Editor <span class="chevron">▾</span></span>
+                <span class="entry-date">04.2021 – 06.2021</span>
+              </div>
+              <p class="entry-org">Running to Zen</p>
+            </button>
+            <ul class="entry-list" aria-hidden="true">
+              <li>Partnered with author William Hazel to review and provide feedback on manuscript content and style.</li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <button class="entry-toggle" aria-expanded="false">
+              <div class="entry-header">
+                <span class="entry-title">Editorial Assistant <span class="chevron">▾</span></span>
+                <span class="entry-date">09.2019 – 06.2020</span>
+              </div>
+              <p class="entry-org">English Education</p>
+            </button>
+            <ul class="entry-list" aria-hidden="true">
+              <li>Reviewed and proofread incoming manuscripts; acted as liaison between authors, reviewers, and the Editor.</li>
+              <li>Maintained administrative materials and attended weekly editorial meetings.</li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <button class="entry-toggle" aria-expanded="false">
+              <div class="entry-header">
+                <span class="entry-title">UX Research Intern &amp; Social Media Strategist <span class="chevron">▾</span></span>
+                <span class="entry-date">01.2020 – 05.2020</span>
+              </div>
+              <p class="entry-org">James Madison University Counseling Center</p>
+            </button>
+            <ul class="entry-list" aria-hidden="true">
+              <li>Designed and conducted a usability study on the JMU Counseling Center website.</li>
+              <li>Analyzed accounts and developed social media recommendations and a comprehensive style guide.</li>
+            </ul>
+          </article>
+
+        </section>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-right">
+
+        <!-- Education -->
+        <section class="section">
+          <p class="section-label">Education</p>
+
+          <div class="edu-entry">
+            <p class="edu-degree">Master of Arts</p>
+            <p class="edu-field">Writing, Rhetoric &amp; Technical Communication</p>
+            <p class="edu-school">James Madison University &nbsp;·&nbsp; 2018 – 2020</p>
+          </div>
+
+          <div class="edu-entry">
+            <p class="edu-degree">Bachelor of Arts — Cum Laude</p>
+            <p class="edu-field">English; Communications &amp; Digital Studies</p>
+            <p class="edu-school">University of Mary Washington &nbsp;·&nbsp; 2013 – 2017</p>
+          </div>
+        </section>
+
+        <!-- Skills -->
+        <section class="section">
+          <p class="section-label">Skills</p>
+          <div class="skills-grid">
+            <span class="skill-tag">Content Strategy</span>
+            <span class="skill-tag">Editorial Project Management</span>
+            <span class="skill-tag">Research &amp; Reporting</span>
+            <span class="skill-tag">Audience Strategy</span>
+            <span class="skill-tag">Cross-functional Collaboration</span>
+            <span class="skill-tag">UX Research</span>
+            <span class="skill-tag">Social Media Strategy</span>
+            <span class="skill-tag">Copyediting &amp; Proofreading</span>
+            <span class="skill-tag">Technical Communication</span>
+            <span class="skill-tag">Digital Content Platforms</span>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ── FOOTER ───────────────────────────────────── -->
+    <footer>
+      <span class="footer-note">Résumé &nbsp;·&nbsp; February 2026</span>
+      <a class="footer-site" href="https://meganquintin.com" target="_blank" rel="noopener">meganquintin.com</a>
+    </footer>
+  </div>
+
+  <!-- ── Scroll-reveal animation ──────────────────── -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = el.dataset.delay || 0;
+          setTimeout(() => el.classList.add('visible'), delay);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    // Stagger entries
+    document.querySelectorAll('.entry').forEach((el, i) => {
+      el.dataset.delay = i * 80;
+      observer.observe(el);
+    });
+
+    // Collapsible experience entries
+    document.querySelectorAll('.entry-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const entry  = toggle.closest('.entry');
+        const list   = entry.querySelector('.entry-list');
+        const isOpen = entry.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        list.setAttribute('aria-hidden', String(!isOpen));
+      });
+    });
+
+    document.querySelectorAll('.edu-entry').forEach((el, i) => {
+      el.dataset.delay = i * 100;
+      observer.observe(el);
+    });
+
+    document.querySelectorAll('.skill-tag').forEach((el, i) => {
+      el.dataset.delay = i * 50;
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
