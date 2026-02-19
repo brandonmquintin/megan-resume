@@ -113,8 +113,61 @@
 
     .btn-email:hover svg { transform: translateX(2px); }
 
+    /* ── Tab Bar ──────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      padding-top: 2.5rem;
+    }
+
+    .tab {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0.65rem 1.6rem 0.55rem;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      position: relative;
+      bottom: -1px;
+      z-index: 1;
+      transition: color 0.2s ease;
+    }
+
+    .tab:hover { color: var(--accent); }
+
+    .tab--active {
+      color: var(--black);
+      border-bottom-color: var(--white);
+      z-index: 2;
+    }
+
+    .tab:not(.tab--active) {
+      background: linear-gradient(to bottom, var(--white) 0%, #f0f0ed 100%);
+    }
+
+    .tab + .tab { margin-left: -1px; }
+
+    .tab:focus-visible {
+      outline: 1px solid var(--mid);
+      outline-offset: 2px;
+    }
+
     /* ── Main content ─────────────────────────────────── */
     main {
+      border-top: 1px solid var(--line);
+    }
+
+    /* ── Panels ──────────────────────────────────────── */
+    .panel { display: none; }
+    .panel--active { display: block; }
+
+    /* ── Resume grid (two-column layout) ─────────────── */
+    .resume-grid {
       display: grid;
       grid-template-columns: 1fr 280px;
       gap: 0;
@@ -322,6 +375,87 @@
       transform: translateX(0);
     }
 
+    /* ── Portfolio panel ──────────────────────────────── */
+    #panel-portfolio {
+      padding: 3.5rem 0 4rem;
+    }
+
+    .portfolio-section {
+      max-width: 520px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .portfolio-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .portfolio-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: var(--sans);
+      color: inherit;
+      width: 100%;
+    }
+
+    .portfolio-toggle:hover { opacity: 0.65; }
+
+    .portfolio-toggle:focus-visible {
+      outline: 1px solid var(--mid);
+      outline-offset: 3px;
+    }
+
+    .portfolio-label {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .portfolio-section.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .portfolio-links {
+      list-style: none;
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.38s ease, opacity 0.3s ease;
+    }
+
+    .portfolio-section.open .portfolio-links {
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    .portfolio-links li {
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .portfolio-links li:first-child {
+      margin-top: 0.8rem;
+    }
+
+    .portfolio-links a {
+      font-family: var(--sans);
+      font-size: 0.84rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+    }
+
+    .portfolio-links a:hover { color: var(--mid); }
+
     /* ── Footer ───────────────────────────────────────── */
     footer {
       border-top: 1px solid var(--line);
@@ -353,7 +487,11 @@
     /* ── Responsive ───────────────────────────────────── */
     @media (max-width: 680px) {
       header { padding: 4rem 0 3rem; }
-      main {
+      .tab {
+        padding: 0.55rem 1.1rem 0.45rem;
+        font-size: 0.68rem;
+      }
+      .resume-grid {
         grid-template-columns: 1fr;
       }
       .col-left {
@@ -390,8 +528,18 @@
       </div>
     </header>
 
-    <!-- ── MAIN GRID ───────────────────────────────── -->
+    <!-- ── TAB BAR ─────────────────────────────────── -->
+    <nav class="tab-bar" role="tablist" aria-label="Content sections">
+      <button class="tab tab--active" role="tab" aria-selected="true" aria-controls="panel-resume" id="tab-resume">Résumé</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-portfolio" id="tab-portfolio">Portfolio</button>
+    </nav>
+
+    <!-- ── CONTENT ─────────────────────────────────── -->
     <main>
+
+      <!-- ── RÉSUMÉ PANEL ────────────────────────────── -->
+      <div class="panel panel--active" id="panel-resume" role="tabpanel" aria-labelledby="tab-resume">
+        <div class="resume-grid">
 
       <!-- LEFT COLUMN -->
       <div class="col-left">
@@ -524,6 +672,44 @@
         </section>
 
       </div>
+        </div><!-- /.resume-grid -->
+      </div><!-- /#panel-resume -->
+
+      <!-- ── PORTFOLIO PANEL ─────────────────────────── -->
+      <div class="panel" id="panel-portfolio" role="tabpanel" aria-labelledby="tab-portfolio" hidden>
+
+        <section class="section portfolio-section">
+          <button class="portfolio-toggle" aria-expanded="false">
+            <span class="section-label portfolio-label">Writing</span>
+            <span class="chevron">▾</span>
+          </button>
+          <ul class="portfolio-links" aria-hidden="true">
+            <li><a href="#" target="_blank" rel="noopener">Sample — Coming Soon</a></li>
+          </ul>
+        </section>
+
+        <section class="section portfolio-section">
+          <button class="portfolio-toggle" aria-expanded="false">
+            <span class="section-label portfolio-label">Design</span>
+            <span class="chevron">▾</span>
+          </button>
+          <ul class="portfolio-links" aria-hidden="true">
+            <li><a href="#" target="_blank" rel="noopener">Sample — Coming Soon</a></li>
+          </ul>
+        </section>
+
+        <section class="section portfolio-section">
+          <button class="portfolio-toggle" aria-expanded="false">
+            <span class="section-label portfolio-label">Etc.</span>
+            <span class="chevron">▾</span>
+          </button>
+          <ul class="portfolio-links" aria-hidden="true">
+            <li><a href="#" target="_blank" rel="noopener">Sample — Coming Soon</a></li>
+          </ul>
+        </section>
+
+      </div><!-- /#panel-portfolio -->
+
     </main>
 
     <!-- ── FOOTER ───────────────────────────────────── -->
@@ -571,6 +757,60 @@
     document.querySelectorAll('.skill-tag').forEach((el, i) => {
       el.dataset.delay = i * 50;
       observer.observe(el);
+    });
+
+    // ── Tab switching ──────────────────────────────────
+    const tabs   = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('tab--active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach(p => {
+          p.classList.remove('panel--active');
+          p.setAttribute('hidden', '');
+        });
+
+        tab.classList.add('tab--active');
+        tab.setAttribute('aria-selected', 'true');
+
+        const panelId = tab.getAttribute('aria-controls');
+        const panel   = document.getElementById(panelId);
+        panel.classList.add('panel--active');
+        panel.removeAttribute('hidden');
+
+        // Scroll tab bar into view
+        document.querySelector('.tab-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Update page title
+        document.title = panelId === 'panel-portfolio'
+          ? 'Megan P. Quintin — Portfolio'
+          : 'Megan P. Quintin — Résumé';
+
+        // Trigger scroll-reveal for portfolio sections on first visit
+        if (panelId === 'panel-portfolio') {
+          panel.querySelectorAll('.portfolio-section').forEach((el, i) => {
+            if (!el.classList.contains('visible')) {
+              el.dataset.delay = i * 100;
+              observer.observe(el);
+            }
+          });
+        }
+      });
+    });
+
+    // ── Portfolio accordion ────────────────────────────
+    document.querySelectorAll('.portfolio-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const section = toggle.closest('.portfolio-section');
+        const links   = section.querySelector('.portfolio-links');
+        const isOpen  = section.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        links.setAttribute('aria-hidden', String(!isOpen));
+      });
     });
   </script>
 
